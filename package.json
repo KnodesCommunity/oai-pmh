@@ -4,6 +4,7 @@
   "description": "OAI-PMH harvester module for nodejs",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
+  "types": "./index.d.ts",
   "type": "commonjs",
   "scripts": {
     "build": "npm run build:esm && npm run build:cjs && npm run build:bin && npm run build:package-modes",
@@ -21,8 +22,8 @@
     "oai-pmh": "./dist/bin/oai-pmh"
   },
   "files": [
-      "dist/*",
-      "index.d.ts"
+    "dist/*",
+    "index.d.ts"
   ],
   "repository": {
     "type": "git",

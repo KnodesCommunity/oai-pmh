@@ -1,112 +1,112 @@
-import { assign, get } from 'lodash'
-import got from 'got'
-import queryString from 'query-string'
+import { assign, get } from "lodash";
+import got from "got";
+import queryString from "query-string";
 
-import pkg from '~/package.json'
-import { OaiPmhError } from './errors'
-import { getOaiListItems } from './oai-pmh-list'
-import { parseOaiPmhXml } from './oai-pmh-xml'
+import pkg from "~/package.json";
+import { OaiPmhError } from "./errors.js";
+import { getOaiListItems } from "./oai-pmh-list.js";
+import { parseOaiPmhXml } from "./oai-pmh-xml.js";
 
 // main class
 export class OaiPmh {
-  constructor (baseUrl, _options = {}) {
-    this.baseUrl = baseUrl
+  constructor(baseUrl, _options = {}) {
+    this.baseUrl = baseUrl;
 
     // default options
     this.options = {
       userAgent: `oai-pmh/${pkg.version} (${pkg.homepage})`,
       retry: true, // automatically retry in case of status code 503
-      retryMax: 600000 // wait at maximum 600 seconds, given in milliseconds
-    }
+      retryMax: 600000, // wait at maximum 600 seconds, given in milliseconds
+    };
 
     // set user-provided options
-    assign(this.options, _options)
+    assign(this.options, _options);
   }
 
   // OAI-PMH request with retries for status code 503
-  async request ({ url, qs, headers }) {
+  async request({ url, qs, headers }) {
     try {
       const res = await got.get(url, {
         searchParams: queryString.stringify(qs),
         headers: {
           ...(headers || {}),
-          'User-Agent': this.options.userAgent
+          "User-Agent": this.options.userAgent,
         },
         retry: this.options.retry
           ? { maxRetryAfter: this.options.retryMax }
-          : 0
-      })
+          : 0,
+      });
 
-      this.lastXMLResponse = res.body
+      this.lastXMLResponse = res.body;
 
-      return res
+      return res;
     } catch (error) {
       throw new OaiPmhError(
-        `Unexpected status code ${error.response.statusCode} (expected 200).`
-      )
+        `Unexpected status code ${error.response.statusCode} (expected 200).`,
+      );
     }
   }
 
-  async getRecord (identifier, metadataPrefix) {
+  async getRecord(identifier, metadataPrefix) {
     // send request
     const res = await this.request({
       url: this.baseUrl,
       qs: {
-        verb: 'GetRecord',
+        verb: "GetRecord",
         identifier,
-        metadataPrefix
-      }
-    })
+        metadataPrefix,
+      },
+    });
 
     // parse xml
-    const obj = await parseOaiPmhXml(res.body)
+    const obj = await parseOaiPmhXml(res.body);
 
     // parse object
-    return get(obj, 'GetRecord.record')
+    return get(obj, "GetRecord.record");
   }
 
-  async identify () {
+  async identify() {
     // send request
     const res = await this.request({
       url: this.baseUrl,
       qs: {
-        verb: 'Identify'
-      }
-    })
+        verb: "Identify",
+      },
+    });
 
     // parse xml
-    const obj = await parseOaiPmhXml(res.body)
+    const obj = await parseOaiPmhXml(res.body);
 
     // parse object
-    return obj.Identify
+    return obj.Identify;
   }
 
-  listIdentifiers (options) {
-    return getOaiListItems(this, 'ListIdentifiers', 'header', options)
+  listIdentifiers(options) {
+    return getOaiListItems(this, "ListIdentifiers", "header", options);
   }
 
-  async listMetadataFormats (options = {}) {
+  async listMetadataFormats(options = {}) {
     // send request
     const res = await this.request({
       url: this.baseUrl,
       qs: {
-        verb: 'ListMetadataFormats',
-        identifier: options.identifier
-      }
-    })
+        verb: "ListMetadataFormats",
+        identifier: options.identifier,
+      },
+    });
 
     // parse xml
-    const obj = await parseOaiPmhXml(res.body)
+    const obj = await parseOaiPmhXml(res.body);
 
     // parse object
-    return get(obj, 'ListMetadataFormats.metadataFormat')
+    return get(obj, "ListMetadataFormats.metadataFormat");
   }
 
-  listRecords (options) {
-    return getOaiListItems(this, 'ListRecords', 'record', options)
+  listRecords(options) {
+    return getOaiListItems(this, "ListRecords", "record", options);
   }
 
-  listSets () {
-    return getOaiListItems(this, 'ListSets', 'set')
+  listSets() {
+    return getOaiListItems(this, "ListSets", "set");
   }
 }

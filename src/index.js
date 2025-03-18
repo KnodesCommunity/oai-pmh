@@ -1,2 +1,2 @@
-export { OaiPmh } from './oai-pmh'
-export { OaiPmhError } from './errors'
+export { OaiPmh } from "./oai-pmh.js";
+export { OaiPmhError } from "./errors.js";
