@@ -1,4 +1,4 @@
-import { get } from "lodash";
+import _ from "lodash";
 
 import { parseOaiPmhXml } from "./oai-pmh-xml.js";
 
@@ -8,8 +8,8 @@ function getResumptionToken(result, listSize) {
 
   if (typeof token === "string") return token;
 
-  const cursor = get(token, "$.cursor");
-  const completeListSize = get(token, "$.completeListSize");
+  const cursor = _.get(token, "$.cursor");
+  const completeListSize = _.get(token, "$.completeListSize");
 
   if (
     cursor &&

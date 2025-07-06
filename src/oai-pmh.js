@@ -1,8 +1,8 @@
-import { assign, get } from "lodash";
+import _ from "lodash";
 import got from "got";
 import queryString from "query-string";
 
-import pkg from "~/package.json";
+import pkg from "../package.json" with {type: 'json'};
 import { OaiPmhError } from "./errors.js";
 import { getOaiListItems } from "./oai-pmh-list.js";
 import { parseOaiPmhXml } from "./oai-pmh-xml.js";
@@ -20,7 +20,7 @@ export class OaiPmh {
     };
 
     // set user-provided options
-    assign(this.options, _options);
+    _.assign(this.options, _options);
   }
 
   // OAI-PMH request with retries for status code 503
@@ -62,7 +62,7 @@ export class OaiPmh {
     const obj = await parseOaiPmhXml(res.body);
 
     // parse object
-    return get(obj, "GetRecord.record");
+    return _.get(obj, "GetRecord.record");
   }
 
   async identify() {
@@ -99,7 +99,7 @@ export class OaiPmh {
     const obj = await parseOaiPmhXml(res.body);
 
     // parse object
-    return get(obj, "ListMetadataFormats.metadataFormat");
+    return _.get(obj, "ListMetadataFormats.metadataFormat");
   }
 
   listRecords(options) {

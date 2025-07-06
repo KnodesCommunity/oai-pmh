@@ -1,5 +1,5 @@
-import { promisify } from "util";
-import { get } from "lodash";
+import { promisify } from "node:util";
+import _ from "lodash";
 import { parseString } from "xml2js";
 
 import { OaiPmhError } from "./errors.js";
@@ -23,7 +23,7 @@ export async function parseOaiPmhXml(xml) {
   if (error) {
     throw new OaiPmhError(
       `OAI-PMH provider returned an error: ${error._}`,
-      get(error, "$.code"),
+      _.get(error, "$.code"),
     );
   }
 
