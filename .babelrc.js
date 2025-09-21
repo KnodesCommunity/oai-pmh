@@ -23,11 +23,7 @@ module.exports = {
     test: {
       ...shared,
       ignore: [],
-      plugins: [["module-resolver", {
-        alias: {
-          "~/package.json": "./package.json",
-        },
-      }]],
+      plugins: [["module-resolver"]],
       presets: [["@babel/env", {
         ...sharedPresetEnv,
         modules: "commonjs",
@@ -38,7 +34,6 @@ module.exports = {
       plugins: [["module-resolver", {
         alias: {
           "lodash": "lodash-es",
-          "~/package.json": "../package.json",
         },
       }]],
       presets: [["@babel/env", {
@@ -48,11 +43,7 @@ module.exports = {
     },
     cjs: {
       ...shared,
-      plugins: [["module-resolver", {
-        alias: {
-          "~/package.json": "../package.json",
-        },
-      }]],
+      plugins: [["module-resolver"]],
       presets: [["@babel/env", {
         ...sharedPresetEnv,
         modules: "commonjs",
@@ -62,7 +53,6 @@ module.exports = {
       plugins: [["module-resolver", {
         alias: {
           "~/src": "./cjs",
-          "~/package.json": "../package.json",
         },
       }]],
       presets: [["@babel/env", {

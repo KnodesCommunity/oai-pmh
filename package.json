@@ -2,9 +2,6 @@
   "name": "oai-pmh2",
   "version": "2.2.0",
   "description": "OAI-PMH harvester module for nodejs",
-  "module": "./src/index.js",
-  "types": "./index.d.ts",
-  "type": "module",
   "scripts": {
     "build": "npm run build:esm && npm run build:cjs && npm run build:bin && npm run build:package-modes",
     "build:bin": "BABEL_ENV=bin babel bin/oai-pmh --out-file 'dist/bin/oai-pmh' --source-maps --extensions '' && BABEL_ENV=bin babel bin/oai-pmh.js --out-file 'dist/bin/oai-pmh.js' --source-maps",
@@ -19,6 +16,13 @@
   },
   "bin": {
     "oai-pmh": "./dist/bin/oai-pmh"
+  },
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "require": "./dist/cjs/index.js",
+      "import": "./src/index.js"
+    }
   },
   "files": [
     "dist/*",

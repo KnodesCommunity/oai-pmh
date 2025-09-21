@@ -2,10 +2,12 @@ import _ from "lodash";
 import got from "got";
 import queryString from "query-string";
 
-import pkg from "../package.json" with { type: "json" };
+// import pkg from "../package.json" with { type: "json" };
+const pkg = createRequire(import.meta.url)("../package.json");
 import { OaiPmhError } from "./errors.js";
 import { getOaiListItems } from "./oai-pmh-list.js";
 import { parseOaiPmhXml } from "./oai-pmh-xml.js";
+import { createRequire } from "node:module";
 
 // main class
 export class OaiPmh {
