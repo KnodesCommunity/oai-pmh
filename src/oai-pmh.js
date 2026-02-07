@@ -1,13 +1,13 @@
-import _ from "lodash";
+import { createRequire } from "node:module";
 import got from "got";
-import queryString from "query-string";
+import _ from "lodash";
 
 // import pkg from "../package.json" with { type: "json" };
 const pkg = createRequire(import.meta.url)("../package.json");
+import queryString from "query-string";
 import { OaiPmhError } from "./errors.js";
 import { getOaiListItems } from "./oai-pmh-list.js";
 import { parseOaiPmhXml } from "./oai-pmh-xml.js";
-import { createRequire } from "node:module";
 
 // main class
 export class OaiPmh {

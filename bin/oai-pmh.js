@@ -1,9 +1,9 @@
-import { pick } from "lodash";
-import program from "commander";
+import process from "node:process";
+import pkg from "~/package.json";
 
 import { OaiPmh } from "~/src";
-import pkg from "~/package.json";
-import process from "node:process";
+import program from "commander";
+import { pick } from "lodash";
 
 program.version(pkg.version);
 
